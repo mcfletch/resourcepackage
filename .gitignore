@@ -1,4 +1,5 @@
 *.e?p
-.ericproject
+.eric?project
 *.egg-info
 dist
+__pycache__
