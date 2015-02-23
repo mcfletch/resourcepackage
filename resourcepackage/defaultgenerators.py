@@ -1,5 +1,10 @@
 """Objects for doing generic data-as-code encoding"""
-import string, cStringIO, zlib, types, os
+import zlib, os
+try:
+    unicode
+except NameError:
+    unicode=str 
+    xrange = range
 import resourcepackage
 
 HEADER = '''# -*- coding: ISO-8859-1 -*-
@@ -15,11 +20,11 @@ class SimpleGenerator:
     def __call__( self, source, destination, package=None ):
         """Encode source in destination for package"""
         header = self.getHeader( source, destination, package )
-        assert isinstance( header, types.StringType ), """Generator %s didn't return a String, returned %r"""%( self, header )
+        assert isinstance( header, str), """Generator %s didn't return a str, returned %r"""%( self, header )
         data = self.getDataRepr( source, destination, package )
-        assert isinstance( data, types.StringType ), """Generator %s didn't return a String, returned %r"""%( self, data )
+        assert isinstance( data, str ), """Generator %s didn't return a str, returned %r"""%( self, data )
         footer = self.getFooter( source, destination, package )
-        assert isinstance( footer, types.StringType ), """Generator %s didn't return a String, returned %r"""%( self, footer )
+        assert isinstance( footer, str ), """Generator %s didn't return a str, returned %r"""%( self, footer )
         
         file = open(destination,'w')
         try:
@@ -76,7 +81,6 @@ class CompressedGenerator( SimpleGenerator ):
 _char_map = {
 }
 for c in range(32):
-    
     _char_map[ chr(c)] = '\\%03o'%(c)
 _char_map['"'] = '\\"'
 _char_map['\\'] = '\\\\'
@@ -89,14 +93,18 @@ def crunch_data(source, chunkSize=60, charMap = _char_map ):
     characters in the source code.
     """
     result = []
-    lastIndex = 0
     for index in xrange(0, len(source), chunkSize):
-        sresult = "".join([
-            charMap.get( char, char)
-            for char in source[index:index+chunkSize]
-        ])
-        result.append( sresult )
-    return '"%s"'%( '\\\n'.join( result ))
+#        sresult = b"".join([
+#            bytes(charMap.get( char, char))
+#            for char in source[index:index+chunkSize]
+#        ])
+#        result.append( sresult )
+#    return b'u"%s".encode("latin-1")'%( b'\\\n'.join( result ))        
+        base = repr(source[index:index+chunkSize])
+        if not base.startswith('b'):
+            base = 'b'+base
+        result.append(base)
+    return '\n+'.join(result)
 
 SIMPLE = SimpleGenerator()
 COMPRESSED = CompressedGenerator()

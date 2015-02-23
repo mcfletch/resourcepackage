@@ -1,6 +1,6 @@
 """Package object, manages package-related operations
 """
-import os, string, stat, traceback, types
+import os, stat, types
 from resourcepackage import defaultgenerators
 try:
     import logging
@@ -67,7 +67,7 @@ class Package:
         except ValueError:
             # there is no extension on the file...
             base, ext = filename, ''
-        ext = string.lower(ext)
+        ext = ext.lower()
         # Alpha 3 changes, makes the module names less
         # consistent, but allows for more file-names to map
         # to unique module names
@@ -75,8 +75,8 @@ class Package:
         #   although I think they should be unified
         #   I'm guessing other's will want them unique
         #   base = string.lower( base )
-        base = string.replace( filename, ".", "_" )
-        base = string.replace( base, " ", "_" )
+        base = filename.replace(".", "_" )
+        base = base.replace(" ", "_" )
         return base, ext
         
 
@@ -84,7 +84,7 @@ class Package:
         """Determine whether we consider this file a resource"""
         if not os.path.isfile( os.path.join( self.directory, file )):
             return 0
-        file = string.lower( file )
+        file = file.lower()
         if (
             ( ext not in self.ignoreExtensions ) and
             ( file not in self.ignoreFiles ) and
@@ -109,7 +109,7 @@ class Package:
             if log:
                 log.debug("""file=%r, base=%r, ext=%r""", file, base, ext )
             if self.isResource( file, ext ):
-                if testFileNames.has_key( base ):
+                if base in testFileNames:
                     raise ValueError(
                         """%s has two data files %s and %s which would generate the same Python module %s"""%(
                             self, file, testFileNames[base]
@@ -248,7 +248,7 @@ class Package:
             log.info("""scan(force=%r) %s""", force, self )
         fileList = filter ( self.isEncodedResource, os.listdir( self.directory ))
         for file in fileList:
-            self.extractFile (module, force)
+            self.extractFile (file, force)
 
     def extractFile( self, module, force = 0 ):
         """Extract a single file from source (python module) to destination"""
@@ -288,8 +288,8 @@ class Package:
             
     def importModule(self, baseName):
         """Import the given module from our package and return the module object"""
-        moduleName = string.split( self.packageName,'.')+[baseName]
-        return __import__( string.join( moduleName, '.'), {}, {}, moduleName)
+        moduleName = self.packageName.split('.')+[baseName]
+        return __import__( '.'.join(moduleName), {}, {}, moduleName)
 
 ##
 ##if log:
