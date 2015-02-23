@@ -1,3 +1,4 @@
 *.e?p
 .ericproject
 *.egg-info
+dist
