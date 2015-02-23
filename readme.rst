@@ -1,7 +1,7 @@
 ResourcePackage for Python
 =================
 
-ResourcePackage is a mechanism for automatically managing "resources"
+ResourcePackage is a mechanism for automatically managing `resources`
 (i.e. non-Python files: small images, documentation files, binary data)
 embedded in Python modules (as Python source code), particularly for
 those wishing to create re-usable Python packages which require their
@@ -12,7 +12,8 @@ Usage
 -----
 
 Install as a standard Python module (using setuptools). Note that 
-setuptools is *not* required by the *generated* resource packages::
+ResourcePackage and setuptools are *not* required by the 
+*generated* resource packages::
 
     pip install ResourcePackage
 
@@ -55,3 +56,8 @@ ResourcePackage is ancient code at this point. It has been stable and
 working for so long it was still hosted on CVS in 2015. The only point 
 in creating the new (2015 release) is to address packaging/pip-installation 
 and python3 support.
+
+Python 3 support is *definitely* not there yet. Python 3 doesn't allow 
+extended characters in byte-strings (even with coding set), so we can't 
+use the original approach to embedding, but the current approach wastes 
+a lot of space.
