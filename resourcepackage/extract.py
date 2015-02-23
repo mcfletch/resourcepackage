@@ -75,10 +75,10 @@ if __name__ == "__main__":
 			modules = arguments[1:]
 			main( packageName, modules, force=force )
 		else:
-			print usage
-			print 'ERR: arguments received', sys.argv[1:]
+			print(usage)
+			print('ERR: arguments received', sys.argv[1:])
 	else:
-		print usage
+		print(usage)
 			
 	
 

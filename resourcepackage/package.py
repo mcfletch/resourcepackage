@@ -258,7 +258,7 @@ class Package:
 		base, ext = self.fileToName( module )
 		try:
 			moduleObject = self.importModule(base)
-		except Exception, err:
+		except Exception as err:
 			if log:
 				log.error( """Exception while attempting to extract module %s, %s""", module, err)
 			return
