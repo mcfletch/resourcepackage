@@ -13,4 +13,3 @@ See the doc sub-directory for documentation
 __version__ = (1,0,1)
 __author__ = "Michael Colin Fletcher"
 __license__ = "BSD-Style, see license.txt for details"
-
