@@ -1,0 +1,12 @@
+include MANIFEST.in
+include license.txt
+include *.py
+include testres/*
+
+global-exclude *CVS*
+global-exclude *Cvs*
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.db
+global-exclude *.gz
+
