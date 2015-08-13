@@ -104,7 +104,7 @@ def crunch_data(source, chunkSize=60, charMap = _char_map ):
         if not base.startswith('b'):
             base = 'b'+base
         result.append(base)
-    return '\n+'.join(result)
+    return '(%s)'%'\n+'.join(result)
 
 SIMPLE = SimpleGenerator()
 COMPRESSED = CompressedGenerator()
